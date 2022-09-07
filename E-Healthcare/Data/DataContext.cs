@@ -6,6 +6,7 @@ namespace E_Healthcare.Data
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-        public DbSet<Account> Accounts { get; set; } = default!;
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }
