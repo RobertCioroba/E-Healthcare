@@ -10,7 +10,7 @@ using E_Healthcare.Models;
 
 namespace E_Healthcare.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Admin")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace E_Healthcare.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("getAllMedicine")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             if (_context.Products == null)
@@ -31,7 +31,7 @@ namespace E_Healthcare.Controllers
             return await _context.Products.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getMedicineById/{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             if (_context.Products == null)
@@ -48,7 +48,7 @@ namespace E_Healthcare.Controllers
             return product;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("updateMedicine/{id}")]
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
             if (id != product.ID)
@@ -77,7 +77,7 @@ namespace E_Healthcare.Controllers
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpPost("addMedicine")]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
           if (_context.Products == null)
@@ -90,7 +90,7 @@ namespace E_Healthcare.Controllers
             return CreatedAtAction("GetProduct", new { id = product.ID }, product);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteMedicineById/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             if (_context.Products == null)
