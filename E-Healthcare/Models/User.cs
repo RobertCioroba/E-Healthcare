@@ -18,8 +18,9 @@ namespace E_Healthcare.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        public string Password { get; set; }
+        public byte[] PasswordHash { get; set; }
+
+        public byte[] PasswordSalt { get; set; }
 
         public bool IsAdmin { get; set; }
 
