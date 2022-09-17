@@ -7,7 +7,7 @@ namespace E_Healthcare.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AccountsController : ControllerBase
     { 
         private readonly DataContext _context;

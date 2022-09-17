@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using E_Healthcare.Data;
 using E_Healthcare.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Healthcare.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,User")]
     public class OrdersController : ControllerBase
     {
         private readonly DataContext _context;

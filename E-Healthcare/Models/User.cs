@@ -18,11 +18,12 @@ namespace E_Healthcare.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        public string AdminPassword { get; set; }
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin { get; set; } = false;
 
         [DataType(DataType.Date)]
         [Display(Name = "Date of birth")]

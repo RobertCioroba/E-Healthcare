@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using E_Healthcare.Data;
 using E_Healthcare.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace E_Healthcare.Controllers
 {
     [Route("api/Admin")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly DataContext _context;
@@ -22,6 +24,7 @@ namespace E_Healthcare.Controllers
         }
 
         [HttpGet("getAllMedicine")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             if (_context.Products == null)
@@ -32,6 +35,7 @@ namespace E_Healthcare.Controllers
         }
 
         [HttpGet("getMedicineById/{id}")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             if (_context.Products == null)
@@ -49,6 +53,7 @@ namespace E_Healthcare.Controllers
         }
 
         [HttpPut("updateMedicine/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
             if (id != product.ID)
@@ -78,6 +83,7 @@ namespace E_Healthcare.Controllers
         }
 
         [HttpPost("addMedicine")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
           if (_context.Products == null)
@@ -91,6 +97,7 @@ namespace E_Healthcare.Controllers
         }
 
         [HttpDelete("deleteMedicineById/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             if (_context.Products == null)
