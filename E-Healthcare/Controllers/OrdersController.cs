@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using E_Healthcare.Data;
 using E_Healthcare.Models;
 using Microsoft.AspNetCore.Authorization;
+using E_Healthcare.Models.Enums;
 
 namespace E_Healthcare.Controllers
 {
@@ -50,33 +51,18 @@ namespace E_Healthcare.Controllers
             return order;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        [HttpPut("{orderId}/{status}")]
+        public async Task<IActionResult> PutOrder(int orderId, OrderStatus status)
         {
-            if (id != order.ID)
-            {
-                return BadRequest();
-            }
+            Order order = await _context.Orders.FirstOrDefaultAsync(x => x.ID == orderId);
 
-            _context.Entry(order).State = EntityState.Modified;
+            if (order == null)
+                return NotFound("Order not found.");
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            order.Status = status;
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(order);
         }
 
         [HttpPost]

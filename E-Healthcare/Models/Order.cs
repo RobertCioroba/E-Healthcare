@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using E_Healthcare.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Healthcare.Models
 {
@@ -11,6 +12,8 @@ namespace E_Healthcare.Models
 
         [Display(Name = "Placed on")]
         public DateTime PlacedOn { get; set; }
+
+        public OrderStatus Status { get; set; }
 
         public virtual User User { get; set; }
     }

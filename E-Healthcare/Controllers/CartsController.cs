@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using E_Healthcare.Data;
 using E_Healthcare.Models;
 using Microsoft.AspNetCore.Authorization;
+using E_Healthcare.Models.Enums;
 
 namespace E_Healthcare.Controllers
 {
@@ -138,6 +139,7 @@ namespace E_Healthcare.Controllers
             order.User = user;
             order.UserID = user.ID;
             order.TotalAmount = total;
+            order.Status = OrderStatus.New;
 
             _context.Orders.Add(order);
 

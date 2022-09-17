@@ -1,10 +1,9 @@
 ﻿namespace E_Healthcare.Models.Enums
 {
-    public enum TaskStatus
+    public enum OrderStatus
     {
         New,
         InProgress,
-        QA,
         Completed
     }
 }
