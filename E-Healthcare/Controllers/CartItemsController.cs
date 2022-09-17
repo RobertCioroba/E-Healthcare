@@ -50,33 +50,17 @@ namespace E_Healthcare.Controllers
             return cartItem;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCartItem(int id, CartItem cartItem)
+        [HttpPut("{cartItemId}/{quantity}")]
+        public async Task<IActionResult> UpdateQuantity(int cartItemId, int quantity)
         {
-            if (id != cartItem.ID)
-            {
-                return BadRequest();
-            }
+            CartItem cartItem = await _context.CartItems.FirstOrDefaultAsync(x => x.ID == cartItemId);
+            if (cartItem == null)
+                return BadRequest("Cart item is null.");
 
-            _context.Entry(cartItem).State = EntityState.Modified;
+            cartItem.Quantity = quantity;
+            await _context.SaveChangesAsync();
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CartItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok("Successfully updated");
         }
 
         [HttpPost]
