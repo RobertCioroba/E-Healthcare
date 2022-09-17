@@ -32,15 +32,6 @@ namespace E_Healthcare.Controllers
             return Ok(account);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<List<Account>>> AddAccount(Account account)
-        {
-            _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
-
-            return Ok(await _context.Accounts.ToListAsync());
-        }
-
         [HttpPut]
         public async Task<ActionResult<List<Account>>> UpdateAccount(Account request)
         {
