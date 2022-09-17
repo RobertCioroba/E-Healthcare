@@ -112,7 +112,7 @@ namespace E_Healthcare.Controllers
         }
 
         [HttpPost("{medicineId}/{userId}")]
-        public async Task<ActionResult> AddItemToTheCart(int medicineId, int userId)
+        public async Task<ActionResult> AddItemToCart(int medicineId, int userId)
         {
             Product medicine = await _context.Products.FindAsync(medicineId);
 

@@ -7,7 +7,7 @@ namespace E_Healthcare.Models
         public int UserID { get; set; }
 
         [Display(Name = "Total amount")]
-        public decimal TotalAmount { get; set; }
+        public double TotalAmount { get; set; }
 
         [Display(Name = "Placed on")]
         public DateTime PlacedOn { get; set; }
