@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using E_Healthcare.Data;
 using E_Healthcare.Models;
 using Microsoft.AspNetCore.Authorization;
+using E_Healthcare.Models.ViewModels;
+using E_Healthcare.Models.Enums;
 
 namespace E_Healthcare.Controllers
 {
@@ -17,6 +19,7 @@ namespace E_Healthcare.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly DataContext _context;
+
 
         public ProductsController(DataContext context)
         {
@@ -125,6 +128,54 @@ namespace E_Healthcare.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("generateReport/{sales}/{stock}/{range?}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ReportViewModel>> GenerateReport(bool sales, bool stock, string range = "total")
+        {
+            List<Product> medicines = new();
+            List<Order> orders = new();
+
+            //set the first day of the filter interval if it's needed
+            DateTime initialDay = DateTime.Today;
+            switch(range)
+            {
+                case "weekly":
+                    initialDay = DateTime.Today.AddDays(-7);
+                    break;
+                case "monthly":
+                    initialDay = DateTime.Today.AddMonths(-1);
+                    break;
+                case "yearly":
+                    initialDay = DateTime.Today.AddYears(-1);
+                    break;
+                default:
+                    break;
+            }
+
+            //get all orderes data if the user have been selected that option
+            if(sales == true)
+            {
+                orders = await _context.Orders.ToListAsync();
+
+                if (!range.Equals(""))
+                {
+                    orders = orders.Where(x => x.PlacedOn.Date >= initialDay.Date && x.PlacedOn.Date <= DateTime.Today.Date).ToList();
+                }
+            }
+
+            //get all stocks data if the user have been selected that option
+            if(stock == true)
+            {
+                medicines = await _context.Products.ToListAsync();
+            }
+
+            ReportViewModel report = new();
+            report.Medicines = medicines;
+            report.Orders = orders;
+
+            return Ok(report);
         }
 
         private bool ProductExists(int id)
