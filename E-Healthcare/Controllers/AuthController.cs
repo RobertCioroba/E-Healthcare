@@ -37,6 +37,7 @@ namespace E_Healthcare.Controllers
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
+            //creating the user
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.Phone = request.Phone;
@@ -51,12 +52,21 @@ namespace E_Healthcare.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            //creating the account for founds details
             Account account = new();
             account.AccNumber = user.ID;
             account.Amount = 1000;
             account.Email = user.Email;
 
             _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
+
+            //creating the cart and assign it to the user
+            Cart cart = new();
+            cart.OwnerID = user.ID;
+            cart.Owner = user;
+
+            _context.Carts.Add(cart);
             await _context.SaveChangesAsync();
 
             return Ok(user);

@@ -13,7 +13,7 @@ namespace E_Healthcare.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin,User")]
+    [Authorize(Roles = "Admin,User")]
     public class CartItemsController : ControllerBase
     {
         private readonly DataContext _context;
@@ -26,20 +26,20 @@ namespace E_Healthcare.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems()
         {
-          if (_context.CartItems == null)
-          {
-              return NotFound();
-          }
+            if (_context.CartItems == null)
+            {
+                return NotFound();
+            }
             return await _context.CartItems.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CartItem>> GetCartItem(int id)
         {
-          if (_context.CartItems == null)
-          {
-              return NotFound();
-          }
+            if (_context.CartItems == null)
+            {
+                return NotFound();
+            }
             var cartItem = await _context.CartItems.FindAsync(id);
 
             if (cartItem == null)
@@ -82,10 +82,10 @@ namespace E_Healthcare.Controllers
         [HttpPost]
         public async Task<ActionResult<CartItem>> PostCartItem(CartItem cartItem)
         {
-          if (_context.CartItems == null)
-          {
-              return Problem("CartItems is null.");
-          }
+            if (_context.CartItems == null)
+            {
+                return Problem("CartItems is null.");
+            }
             _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();
 
@@ -109,6 +109,28 @@ namespace E_Healthcare.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPost("{medicineId}/{userId}")]
+        public async Task<ActionResult> AddItemToTheCart(int medicineId, int userId)
+        {
+            Product medicine = await _context.Products.FindAsync(medicineId);
+
+            if (medicine == null)
+                return BadRequest("Medicine not found.");
+
+            Cart cart = await _context.Carts.FirstOrDefaultAsync(x => x.OwnerID == userId);
+
+            CartItem cartItem = new();
+            cartItem.Cart = cart;
+            cartItem.CartID = cart.ID;
+            cartItem.Product = medicine;
+            cartItem.ProductID = medicine.ID;
+
+            _context.CartItems.Add(cartItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(medicine);
         }
 
         private bool CartItemExists(int id)
