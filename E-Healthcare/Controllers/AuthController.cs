@@ -51,6 +51,14 @@ namespace E_Healthcare.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            Account account = new();
+            account.AccNumber = user.ID;
+            account.Amount = 1000;
+            account.Email = user.Email;
+
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
+
             return Ok(user);
         }
 
