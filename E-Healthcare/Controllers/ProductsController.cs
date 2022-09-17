@@ -34,6 +34,17 @@ namespace E_Healthcare.Controllers
             return await _context.Products.ToListAsync();
         }
 
+        [HttpGet("searchByUse/{use}")]
+        [Authorize(Roles = "Admin,User")]
+        public async Task<ActionResult<IEnumerable<Product>>> SearchByUse(string use)
+        {
+            if (_context.Products == null)
+            {
+                return NotFound();
+            }
+            return await _context.Products.Where(x => x.Uses.Contains(use)).ToListAsync();
+        }
+
         [HttpGet("getMedicineById/{id}")]
         [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<Product>> GetProduct(int id)
