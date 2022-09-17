@@ -105,29 +105,47 @@ namespace E_Healthcare.Controllers
                 return NotFound();
             }
 
+            //update the quantity from the stock
+            Product medicine = await _context.Products.FirstOrDefaultAsync(x => x.ID == cartItem.ProductID);
+
+            if (medicine == null)
+                return BadRequest("Not able to find the medicine in the stock.");
+
+            medicine.Quantity += cartItem.Quantity;
+
             _context.CartItems.Remove(cartItem);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        [HttpPost("{medicineId}/{userId}")]
-        public async Task<ActionResult> AddItemToCart(int medicineId, int userId)
+        [HttpPost("{medicineId}/{userId}/{quantity}")]
+        public async Task<ActionResult> AddItemToCart(int medicineId, int userId,int quantity)
         {
+            //getting the data from the database
             Product medicine = await _context.Products.FindAsync(medicineId);
 
             if (medicine == null)
                 return BadRequest("Medicine not found.");
 
+            if (medicine.Quantity < quantity)
+                return BadRequest("The stock is too low.");
+
             Cart cart = await _context.Carts.FirstOrDefaultAsync(x => x.OwnerID == userId);
 
+            //create and add the new entry
             CartItem cartItem = new();
             cartItem.Cart = cart;
             cartItem.CartID = cart.ID;
             cartItem.Product = medicine;
             cartItem.ProductID = medicine.ID;
+            cartItem.Quantity = quantity;
 
             _context.CartItems.Add(cartItem);
+
+            //update the remained quantity
+            medicine.Quantity -= cartItem.Quantity;
+
             await _context.SaveChangesAsync();
 
             return Ok(medicine);

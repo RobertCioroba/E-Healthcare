@@ -109,7 +109,7 @@ namespace E_Healthcare.Controllers
             //calculate the total of the cart items
             foreach(var item in cartItems)
             {
-                total += item.Product.Price;
+                total += item.Product.Price * item.Quantity;
             }
 
             //pay for the products with the money from personal account
