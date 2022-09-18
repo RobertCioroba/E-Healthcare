@@ -23,6 +23,7 @@ namespace E_Healthcare.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("getAllUsers")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -33,6 +34,7 @@ namespace E_Healthcare.Controllers
             return await _context.Users.ToListAsync();
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("getUserById/{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -50,6 +52,7 @@ namespace E_Healthcare.Controllers
             return user;
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpPut("editUser/{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
@@ -79,6 +82,7 @@ namespace E_Healthcare.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpDelete("deleteUser/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
