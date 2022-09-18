@@ -12,7 +12,7 @@ using E_Healthcare.Models.Enums;
 
 namespace E_Healthcare.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/order")]
     [ApiController]
     [Authorize(Roles = "Admin,User")]
     public class OrdersController : ControllerBase
@@ -24,7 +24,7 @@ namespace E_Healthcare.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("getAllOrders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
           if (_context.Orders == null)
@@ -34,7 +34,7 @@ namespace E_Healthcare.Controllers
             return await _context.Orders.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getOrderById/{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
           if (_context.Orders == null)
@@ -51,7 +51,7 @@ namespace E_Healthcare.Controllers
             return order;
         }
 
-        [HttpPut("{orderId}/{status}")]
+        [HttpPut("changeOrderStatus/{orderId}/{status}")]
         public async Task<IActionResult> PutOrder(int orderId, OrderStatus status)
         {
             Order order = await _context.Orders.FirstOrDefaultAsync(x => x.ID == orderId);

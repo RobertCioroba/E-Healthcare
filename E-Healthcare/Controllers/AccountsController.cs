@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_Healthcare.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/account")]
     [ApiController]
     [Authorize(Roles = "Admin")]
     public class AccountsController : ControllerBase
@@ -16,13 +16,13 @@ namespace E_Healthcare.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("getAllAccounts")]
         public async Task<ActionResult<List<Account>>> Get()
         {
             return Ok(await _context.Accounts.ToListAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getAccountById/{id}")]
         public async Task<ActionResult<List<Account>>> Get(int id)
         {
             var account = await _context.Accounts.FindAsync(id);
@@ -32,7 +32,7 @@ namespace E_Healthcare.Controllers
             return Ok(account);
         }
 
-        [HttpPut]
+        [HttpPut("editAccount/{request}")]
         public async Task<ActionResult<List<Account>>> UpdateAccount(Account request)
         {
             var account = await _context.Accounts.FindAsync(request.ID);
@@ -48,7 +48,7 @@ namespace E_Healthcare.Controllers
             return Ok(await _context.Accounts.ToListAsync()); ;
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteAccount/{id}")]
         public async Task<ActionResult<List<Account>>> Delete(int id)
         {
             var account = await _context.Accounts.FindAsync(id);

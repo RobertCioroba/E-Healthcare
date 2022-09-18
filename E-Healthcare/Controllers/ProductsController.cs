@@ -13,7 +13,7 @@ using E_Healthcare.Models.Enums;
 
 namespace E_Healthcare.Controllers
 {
-    [Route("api/Admin")]
+    [Route("api/medicine")]
     [ApiController]
     [Authorize]
     public class ProductsController : ControllerBase

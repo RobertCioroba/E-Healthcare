@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace E_Healthcare.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     [Authorize(Roles = "Admin,User")]
     public class UsersController : ControllerBase
@@ -23,7 +23,7 @@ namespace E_Healthcare.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("getAllUsers")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
           if (_context.Users == null)
@@ -33,7 +33,7 @@ namespace E_Healthcare.Controllers
             return await _context.Users.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getUserById/{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
           if (_context.Users == null)
@@ -50,7 +50,7 @@ namespace E_Healthcare.Controllers
             return user;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("editUser/{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.ID)
@@ -79,7 +79,7 @@ namespace E_Healthcare.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteUser/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             if (_context.Users == null)

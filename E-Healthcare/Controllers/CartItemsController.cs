@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace E_Healthcare.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cartItem")]
     [ApiController]
     [Authorize(Roles = "Admin,User")]
     public class CartItemsController : ControllerBase
@@ -23,7 +23,7 @@ namespace E_Healthcare.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("getAllCartItems")]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems()
         {
             if (_context.CartItems == null)
@@ -33,7 +33,7 @@ namespace E_Healthcare.Controllers
             return await _context.CartItems.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getCartItemById/{id}")]
         public async Task<ActionResult<CartItem>> GetCartItem(int id)
         {
             if (_context.CartItems == null)
@@ -50,7 +50,7 @@ namespace E_Healthcare.Controllers
             return cartItem;
         }
 
-        [HttpPut("{cartItemId}/{quantity}")]
+        [HttpPut("updateQuantity{cartItemId}/{quantity}")]
         public async Task<IActionResult> UpdateQuantity(int cartItemId, int quantity)
         {
             CartItem cartItem = await _context.CartItems.FirstOrDefaultAsync(x => x.ID == cartItemId);
@@ -63,7 +63,7 @@ namespace E_Healthcare.Controllers
             return Ok("Successfully updated");
         }
 
-        [HttpPost]
+        [HttpPost("editCartItem/{cartItem}")]
         public async Task<ActionResult<CartItem>> PostCartItem(CartItem cartItem)
         {
             if (_context.CartItems == null)
@@ -76,7 +76,7 @@ namespace E_Healthcare.Controllers
             return CreatedAtAction("GetCartItem", new { id = cartItem.ID }, cartItem);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("removeCartItem/{id}")]
         public async Task<IActionResult> DeleteCartItem(int id)
         {
             if (_context.CartItems == null)
@@ -103,7 +103,7 @@ namespace E_Healthcare.Controllers
             return NoContent();
         }
 
-        [HttpPost("{medicineId}/{userId}/{quantity}")]
+        [HttpPost("addCartItem/{medicineId}/{userId}/{quantity}")]
         public async Task<ActionResult> AddItemToCart(int medicineId, int userId,int quantity)
         {
             //getting the data from the database
