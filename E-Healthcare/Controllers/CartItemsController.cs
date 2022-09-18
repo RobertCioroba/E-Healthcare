@@ -63,19 +63,6 @@ namespace E_Healthcare.Controllers
             return Ok("Successfully updated");
         }
 
-        [HttpPost("editCartItem/{cartItem}")]
-        public async Task<ActionResult<CartItem>> PostCartItem(CartItem cartItem)
-        {
-            if (_context.CartItems == null)
-            {
-                return Problem("CartItems is null.");
-            }
-            _context.CartItems.Add(cartItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCartItem", new { id = cartItem.ID }, cartItem);
-        }
-
         [HttpDelete("removeCartItem/{id}")]
         public async Task<IActionResult> DeleteCartItem(int id)
         {

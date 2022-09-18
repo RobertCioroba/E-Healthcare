@@ -65,38 +65,6 @@ namespace E_Healthcare.Controllers
             return Ok(order);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
-        {
-          if (_context.Orders == null)
-          {
-              return Problem("Entity set 'DataContext.Orders'  is null.");
-          }
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetOrder", new { id = order.ID }, order);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
-        {
-            if (_context.Orders == null)
-            {
-                return NotFound();
-            }
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
         private bool OrderExists(int id)
         {
             return (_context.Orders?.Any(e => e.ID == id)).GetValueOrDefault();

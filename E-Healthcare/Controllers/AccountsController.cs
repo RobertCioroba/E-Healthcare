@@ -47,17 +47,5 @@ namespace E_Healthcare.Controllers
 
             return Ok(await _context.Accounts.ToListAsync()); ;
         }
-
-        [HttpDelete("deleteAccount/{id}")]
-        public async Task<ActionResult<List<Account>>> Delete(int id)
-        {
-            var account = await _context.Accounts.FindAsync(id);
-            if (account == null)
-                return BadRequest("Account not found");
-
-            _context.Accounts.Remove(account);
-            await _context.SaveChangesAsync();
-            return Ok(await _context.Accounts.ToListAsync());
-        }
     }
 }

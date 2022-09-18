@@ -24,7 +24,7 @@ namespace E_Healthcare.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("getAllCarts")]
         public async Task<ActionResult<IEnumerable<Cart>>> GetCarts()
         {
           if (_context.Carts == null)
@@ -34,7 +34,7 @@ namespace E_Healthcare.Controllers
             return await _context.Carts.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getCartById/{id}")]
         public async Task<ActionResult<Cart>> GetCart(int id)
         {
           if (_context.Carts == null)
@@ -51,39 +51,7 @@ namespace E_Healthcare.Controllers
             return cart;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Cart>> PostCart(Cart cart)
-        {
-          if (_context.Carts == null)
-          {
-              return Problem("Carts is null.");
-          }
-            _context.Carts.Add(cart);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCart", new { id = cart.ID }, cart);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCart(int id)
-        {
-            if (_context.Carts == null)
-            {
-                return NotFound();
-            }
-            var cart = await _context.Carts.FindAsync(id);
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            _context.Carts.Remove(cart);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        [HttpPut("{cartId}")]
+        [HttpPut("checkout/{cartId}")]
         public async Task<ActionResult> Checkout(int cartId)
         {
             //getting all the data from the database
